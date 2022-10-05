@@ -14,7 +14,7 @@ public class gameGUI extends JFrame {
 	private JPanel selectSignPanel;
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
-	private JLabel lblChoseXPr;
+	private JLabel label;
 	/**
 	 * Create the frame.
 	 */
@@ -36,10 +36,10 @@ public class gameGUI extends JFrame {
 	}
 
 	public void addComponents() {
-		lblChoseXPr = new JLabel("Player 1: Chose X or Y");
-		lblChoseXPr.setHorizontalAlignment(SwingConstants.CENTER);
-		lblChoseXPr.setBounds(154, 11, 139, 14);
-		contentPane.add(lblChoseXPr);
+		label = new JLabel("Player 1: Chose X or Y");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setBounds(154, 11, 139, 14);
+		contentPane.add(label);
 		
 		selectSignPanel = new JPanel();
 		selectSignPanel.setBounds(100, 30, 240, 180);
@@ -62,7 +62,7 @@ public class gameGUI extends JFrame {
 				contentPane.remove(selectSignPanel);
 				contentPane.revalidate();
 				contentPane.repaint();
-				addTicTacToePanel('x',lblChoseXPr);
+				addTicTacToePanel('x',label);
 			}
 		});
 		
@@ -71,11 +71,14 @@ public class gameGUI extends JFrame {
 				contentPane.remove(selectSignPanel);
 				contentPane.revalidate();
 				contentPane.repaint();
-				addTicTacToePanel('o',lblChoseXPr);
+				addTicTacToePanel('o',label);
 			}
 		});
 	}
 	
+	public void setLabel(String s) {
+		label.setText(s);
+	}
 	public void addTicTacToePanel(char c,JLabel j) {
 		ticTacToePanel panel = new ticTacToePanel(c,j);
 		panel.setBounds(100, 30, 240, 180);
