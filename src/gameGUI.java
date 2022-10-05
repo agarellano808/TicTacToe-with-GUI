@@ -62,7 +62,7 @@ public class gameGUI extends JFrame {
 				contentPane.remove(selectSignPanel);
 				contentPane.revalidate();
 				contentPane.repaint();
-				addTicTacToePanel('x',label);
+				addTicTacToePanel('x');
 			}
 		});
 		
@@ -71,16 +71,17 @@ public class gameGUI extends JFrame {
 				contentPane.remove(selectSignPanel);
 				contentPane.revalidate();
 				contentPane.repaint();
-				addTicTacToePanel('o',label);
+				addTicTacToePanel('o');
 			}
 		});
 	}
 	
+	
 	public void setLabel(String s) {
 		label.setText(s);
 	}
-	public void addTicTacToePanel(char c,JLabel j) {
-		ticTacToePanel panel = new ticTacToePanel(c,j);
+	public void addTicTacToePanel(char c) {
+		ticTacToePanel panel = new ticTacToePanel(c);
 		panel.setBounds(100, 30, 240, 180);
 		contentPane.add(panel);
 		panel.setLayout(new GridLayout(1, 0, 0, 0));

@@ -6,24 +6,28 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 public class ticTacToePanel extends JPanel {
 
 	private int x, y;
 
 	private game ticTacToeGame;
-	private JLabel l;
+	private AncestorListener ancestorListener;
 	private cpuPlayer test;
+	private gameGUI frame;
 	/**
 	 * Create the panel.
 	 */
-	public ticTacToePanel(char c, JLabel j) {
+	public ticTacToePanel(char c) {
 		setBackground(Color.WHITE);
-		l = j;
+		//l = j;
 		ticTacToeGame = new game(c);
-		turnLabelChange();
+		
 		test= new cpuPlayer('x',ticTacToeGame);
-		addMouseListener();
+		setAncestorListener();
 	}
 
 	public void addMouseListener() {
@@ -54,9 +58,40 @@ public class ticTacToePanel extends JPanel {
 			}
 		});
 	}
+	
+	public void initializeAncestorListener() {
+		frame = (gameGUI) SwingUtilities.getWindowAncestor(this);
+	}
+	
 	public void initializeGame(char c) {
 		ticTacToeGame = new game(c);
 	}
+	
+	private void setAncestorListener() {
+		ancestorListener = new AncestorListener() {
+
+			@Override
+
+			public void ancestorAdded(AncestorEvent ancestorEvent) {
+				addMouseListener();
+				initializeAncestorListener();
+				turnLabelChange();
+			}
+
+			@Override
+			// This method is not being used and has been left intentionally blank
+			public void ancestorMoved(AncestorEvent ancestorEvent) {
+			}
+
+			@Override
+			// This method is not being used and has been left intentionally blank
+			public void ancestorRemoved(AncestorEvent ancestorEvent) {
+			}
+
+		};
+		addAncestorListener(ancestorListener);
+	}
+	
 	// Change it so marked is resolved int he game class so that you can get rid of
 	// double array here
 	public void mark(char playerSign, int x, int y) {
@@ -206,16 +241,16 @@ public class ticTacToePanel extends JPanel {
 
 	public void turnLabelChange() {
 		if (ticTacToeGame.getTurn() == 1) {
-			l.setText("Its player one's turn");
+			frame.setLabel("Its player one's turn");
 		}
 		if (ticTacToeGame.getTurn() == 2) {
-			l.setText("Its player two's turn");
+			frame.setLabel("Its player two's turn");
 		}
 	}
 
 	public boolean checkIfWon(char c) {
 		if (ticTacToeGame.check(c)) {
-			l.setText("success");
+			frame.setLabel("success");
 			return true;
 		}
 		return false;
@@ -223,7 +258,7 @@ public class ticTacToePanel extends JPanel {
   
 	public boolean checkIfDraw() {
 		if(ticTacToeGame.isDraw()) {
-			l.setText("DRAW");
+			frame.setLabel("DRAW");
 			return true;
 		}
 		return false;
