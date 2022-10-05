@@ -13,7 +13,7 @@ public class ticTacToePanel extends JPanel {
 
 	private game ticTacToeGame;
 	private JLabel l;
-	
+	private cpuPlayer test;
 	/**
 	 * Create the panel.
 	 */
@@ -22,7 +22,11 @@ public class ticTacToePanel extends JPanel {
 		l = j;
 		ticTacToeGame = new game(c);
 		turnLabelChange();
-		cpuPlayer test= new cpuPlayer('x',ticTacToeGame);
+		test= new cpuPlayer('x',ticTacToeGame);
+		addMouseListener();
+	}
+
+	public void addMouseListener() {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -50,7 +54,9 @@ public class ticTacToePanel extends JPanel {
 			}
 		});
 	}
-
+	public void initializeGame(char c) {
+		ticTacToeGame = new game(c);
+	}
 	// Change it so marked is resolved int he game class so that you can get rid of
 	// double array here
 	public void mark(char playerSign, int x, int y) {
