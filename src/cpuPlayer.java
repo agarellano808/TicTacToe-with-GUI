@@ -10,29 +10,70 @@ public class cpuPlayer extends player {
 		super(c);
 		this.G = G;
 	}
+	
 	public void play() {
 		 x=0;
 		 y=0;
 		
-		minMax(x,y,G);
+		 findBestMove(x,y,G);
 		System.out.println("Chosen X: "+x+"Chosen y: "+y);
 	    G.mark(getSign(),x,y);
 	}
 	
-	public int minMax(int x,int y, game g) {
+	public int minMax(game g,int depth,Boolean max) {
+	
+		if(g.check(g.getPlayer2Sign())) {
+			System.out.println("max");
+			return 10;
+		}
+		if(g.check(g.getPlayer1Sign())) {
+			return -10;
+		}
+		if(g.isDraw()) {
+			return 0;
+		}
+		if(max) {
+			int score = -1000;
+			for(int i=0;i<3;i++) {
+				for(int j=0;j<3;j++) {
+					if(!g.isMarked(i, j)) {
+						g.mark(g.getPlayer2Sign(),i,j);
+						score=Math.max(score,minMax(g,depth+1,false));
+					}
+				}
+			}
+			return score;
+		}
+		else {
+			int score =1000;
+			for(int i=0;i<3;i++) {
+				for(int j=0;j<3;j++) {
+					if(!g.isMarked(i, j)) {
+						g.mark(g.getPlayer1Sign(),i,j);
+						score=Math.min(score,minMax(g,depth+1,true));
+					}
+				}
+			}
+			return score;
+		}
+	
+	}
+	public int findBestMove(int x,int y, game g) {
 		int score = -2;
 		for (int i = x; i < 3; i++) {
 			for (int j = y; j < 3; j++) {
 				
 				if (!g.isMarked(i, j)) {
 					game TestGame=new game(g);
-				//	System.out.println("i: "+i+"j: "+j);
+					TestGame.setPlayers(g.getPlayer1Sign());
 					TestGame.mark(getSign(),i,j);
-					int scoreFormMove= -(minMax(i,j,TestGame));
-				//	System.out.println("The Score "+scoreFormMove);
-					if(scoreFormMove>score) {
+					System.out.println("i: "+i+"j: "+j);
+					
+					int scoreFromMove= minMax(TestGame,0,false);
+					System.out.println("The Score "+scoreFromMove);
+					if(scoreFromMove>score) {
 						
-						score=scoreFormMove;
+						score=scoreFromMove;
 						this.x=i;
 						this.y=j;
 						System.out.println("x: "+y+"y: "+y);

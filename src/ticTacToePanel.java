@@ -18,15 +18,14 @@ public class ticTacToePanel extends JPanel {
 	private AncestorListener ancestorListener;
 	private cpuPlayer test;
 	private gameGUI frame;
+
 	/**
 	 * Create the panel.
 	 */
 	public ticTacToePanel(char c) {
 		setBackground(Color.WHITE);
-		//l = j;
 		ticTacToeGame = new game(c);
-		
-		test= new cpuPlayer('x',ticTacToeGame);
+		test = new cpuPlayer('x', ticTacToeGame);
 		setAncestorListener();
 	}
 
@@ -39,39 +38,34 @@ public class ticTacToePanel extends JPanel {
 				System.out.println(ticTacToeGame.getTurn());
 				// Comment this out when chanign to AI| remoce the swtich case and have the ai
 				// play by using a function in cas2 by passing game as parameter
-			//	switch (ticTacToeGame.getTurn()) {
-			//	case 1:
-					mark(ticTacToeGame.getPlayer1Sign(), x, y);
-					test.play();
-				if(checkIfWon(ticTacToeGame.getPlayer1Sign())||checkIfDraw()) {
-						removeMouseListener(this);
-					}
-				/*		
-					break;
-				case 2:
-					mark(ticTacToeGame.getPlayer2Sign(), x, y);
-					if(checkIfWon(ticTacToeGame.getPlayer2Sign())||checkIfDraw() ) {
-						removeMouseListener(this);
-					}
-					break;
-				}*/
+				// switch (ticTacToeGame.getTurn()) {
+				// case 1:
+				mark(ticTacToeGame.getPlayer1Sign(), x, y);
+				test.play();
+				if (checkIfWon(ticTacToeGame.getPlayer1Sign()) || checkIfDraw()) {
+					removeMouseListener(this);
+				}
+				/*
+				 * break; case 2: mark(ticTacToeGame.getPlayer2Sign(), x, y);
+				 * if(checkIfWon(ticTacToeGame.getPlayer2Sign())||checkIfDraw() ) {
+				 * removeMouseListener(this); } break; }
+				 */
 			}
 		});
 	}
 	
+
 	public void initializeAncestorListener() {
 		frame = (gameGUI) SwingUtilities.getWindowAncestor(this);
 	}
-	
+
 	public void initializeGame(char c) {
 		ticTacToeGame = new game(c);
 	}
-	
+
 	private void setAncestorListener() {
 		ancestorListener = new AncestorListener() {
-
 			@Override
-
 			public void ancestorAdded(AncestorEvent ancestorEvent) {
 				addMouseListener();
 				initializeAncestorListener();
@@ -91,7 +85,7 @@ public class ticTacToePanel extends JPanel {
 		};
 		addAncestorListener(ancestorListener);
 	}
-	
+
 	// Change it so marked is resolved int he game class so that you can get rid of
 	// double array here
 	public void mark(char playerSign, int x, int y) {
@@ -255,9 +249,9 @@ public class ticTacToePanel extends JPanel {
 		}
 		return false;
 	}
-  
+
 	public boolean checkIfDraw() {
-		if(ticTacToeGame.isDraw()) {
+		if (ticTacToeGame.isDraw()) {
 			frame.setLabel("DRAW");
 			return true;
 		}

@@ -82,6 +82,7 @@ public class game {
 			p1 = new player('o');
 			p2 = new player('x');
 			turn = 1;
+			System.out.println("Hs");
 			break;
 		case 'x':
 			p1 = new player('x');
