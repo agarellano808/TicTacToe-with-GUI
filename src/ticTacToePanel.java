@@ -1,10 +1,13 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
-import javax.swing.JLabel;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
@@ -18,15 +21,16 @@ public class ticTacToePanel extends JPanel {
 	private AncestorListener ancestorListener;
 	private cpuPlayer test;
 	private gameGUI frame;
-
+	private String mode;
 	/**
 	 * Create the panel.
 	 */
-	public ticTacToePanel(char c) {
+	public ticTacToePanel() {
 		setBackground(Color.WHITE);
-		ticTacToeGame = new game(c);
-		test = new cpuPlayer('x', ticTacToeGame);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setAncestorListener();
+		add(Box.createRigidArea(new Dimension(240, 175)));
+
 	}
 
 	public void addMouseListener() {
@@ -40,11 +44,31 @@ public class ticTacToePanel extends JPanel {
 				// play by using a function in cas2 by passing game as parameter
 				// switch (ticTacToeGame.getTurn()) {
 				// case 1:
-				mark(ticTacToeGame.getPlayer1Sign(), x, y);
-				test.play();
-				if (checkIfWon(ticTacToeGame.getPlayer1Sign()) || checkIfDraw()) {
-					removeMouseListener(this);
+				
+				if(mode.equals("COM")) {
+					mark(ticTacToeGame.getPlayer1Sign(), x, y);
+					test.play();
+					if (checkIfWon(ticTacToeGame.getPlayer1Sign()) || checkIfDraw()) {
+						removeMouseListener(this);
+					}
 				}
+				
+
+				else {
+					switch (ticTacToeGame.getTurn()) {
+					case 1:
+						mark(ticTacToeGame.getPlayer1Sign(), x, y);
+						if (checkIfWon(ticTacToeGame.getPlayer1Sign()) || checkIfDraw()) {
+							removeMouseListener(this);
+						}
+						break;
+					case 2:
+						mark(ticTacToeGame.getPlayer2Sign(), x, y);
+						  if(checkIfWon(ticTacToeGame.getPlayer2Sign())||checkIfDraw() ) {
+						       removeMouseListener(this); 
+						       } 
+						  break; 
+				}}
 				/*
 				 * break; case 2: mark(ticTacToeGame.getPlayer2Sign(), x, y);
 				 * if(checkIfWon(ticTacToeGame.getPlayer2Sign())||checkIfDraw() ) {
@@ -54,13 +78,28 @@ public class ticTacToePanel extends JPanel {
 		});
 	}
 	
-
+	
 	public void initializeAncestorListener() {
 		frame = (gameGUI) SwingUtilities.getWindowAncestor(this);
 	}
 
-	public void initializeGame(char c) {
+	public void initializeGame(char c, String mode) {
 		ticTacToeGame = new game(c);
+		this.mode=mode;
+		if(mode.equals("COM")) {
+			if(c=='o') {
+			test = new cpuPlayer('x', ticTacToeGame);
+			}
+			if(c=='x') {
+				
+			test = new cpuPlayer('o', ticTacToeGame);
+			}
+		}
+		if(mode.equals("HUM")){
+			//test = new cpuPlayer('x', ticTacToeGame);
+		}
+		
+		
 	}
 
 	private void setAncestorListener() {
@@ -70,6 +109,7 @@ public class ticTacToePanel extends JPanel {
 				addMouseListener();
 				initializeAncestorListener();
 				turnLabelChange();
+		
 			}
 
 			@Override
